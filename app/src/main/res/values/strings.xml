@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyWeather</string>
+    <string name="city"></string>
+    <string name="save">Save</string>
+    <string name="value" />
+    <string name="weather" />
+    <string name="real_temperature" />
+    <string name="feeling_temperature" />
+    <string name="min_temperature" />
+    <string name="max_temperature" />
+</resources>
