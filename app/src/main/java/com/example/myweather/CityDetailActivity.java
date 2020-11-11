@@ -63,7 +63,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
         final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
         setContentView(R.layout.activity_city_detail);
-        int imageResource = getResources().getIdentifier("@drawable/img_13n", null, getPackageName());
+        int imageResource = getResources().getIdentifier("@drawable/img_10d", null, getPackageName());
         image = findViewById(R.id.weather_image);
         image.setImageResource(imageResource);
         city_name = findViewById(R.id.city);
