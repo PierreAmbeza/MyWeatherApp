@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Entity
 final public class City implements Serializable {
 
-
     @PrimaryKey(autoGenerate = true)
     public int id;
 
