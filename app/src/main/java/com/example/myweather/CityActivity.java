@@ -34,8 +34,6 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
             setContentView(R.layout.activity_city);
             recyclerView = findViewById(R.id.recyclerView);
             recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        final CitiesAdapter citiesAdapter = new CitiesAdapter(cities);
-        recyclerView.setAdapter(citiesAdapter);
         }
         //We configure the click on the fab
         findViewById(R.id.fab).setOnClickListener(this);
@@ -58,7 +56,7 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
             setContentView(R.layout.activity_city_empty);
             findViewById(R.id.fab).setOnClickListener(this);
         }
-        if(recyclerView != null) {
+        else {
             final CitiesAdapter citiesAdapter = new CitiesAdapter(cities);
             recyclerView.setAdapter(citiesAdapter);
         }

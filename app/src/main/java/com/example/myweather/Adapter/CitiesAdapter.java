@@ -19,11 +19,6 @@ import java.util.List;
 
 public final class CitiesAdapter extends Adapter<CityViewHolder>{
 
-    public class EmptyViewHolder extends ViewHolder {
-        public EmptyViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
 
     //The ViewHolder class
     //Each Widget is created as an attribut in order to update the UI
