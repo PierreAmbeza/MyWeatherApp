@@ -43,10 +43,7 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void saveCity(String city)
-    {
-        CityRepository.getInstance(this).addCity(new City(city));
-    }
+    private void saveCity(String city) { CityRepository.getInstance(this).addCity(new City(city)); }
 
     private void resetForm(){
         city_name.setText(null);

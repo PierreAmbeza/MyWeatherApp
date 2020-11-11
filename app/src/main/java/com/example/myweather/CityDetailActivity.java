@@ -2,6 +2,7 @@ package com.example.myweather;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -66,7 +67,6 @@ public class CityDetailActivity extends AppCompatActivity {
         image = findViewById(R.id.weather_image);
         image.setImageResource(imageResource);
         city_name = findViewById(R.id.city);
-        Log.d(CityDetailActivity.class.getSimpleName(), "test");
         city_name.setText(city.city);
         getSupportActionBar().setTitle(city.city);
 
@@ -86,13 +86,13 @@ public class CityDetailActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(CityDetailActivity.this);
             alertDialog.setTitle("Warning!");
             alertDialog.setMessage("Do you really want to delete this city from your favorites?");
-            alertDialog.setCancelable(false);
+            alertDialog.setCancelable(true);
             alertDialog.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
                             CityRepository.getInstance(CityDetailActivity.this).deleteCity(city);
-                            CityDetailActivity.this.finish();
+                            finish();
                         }
                     });
             alertDialog.setNegativeButton("No",
