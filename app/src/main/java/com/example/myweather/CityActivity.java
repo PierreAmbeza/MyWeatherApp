@@ -24,7 +24,7 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
 
     private RecyclerView recyclerView;
 
-    public static final String TAG = CityActivity.class.getSimpleName();
+    public static final String TAGG = CityActivity.class.getSimpleName();
 
 
     @Override
