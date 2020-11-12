@@ -15,6 +15,7 @@ import com.example.myweather.repository.CityRepository;
 import com.example.myweather.Adapter.CitiesAdapter;
 import java.util.List;
 
+
 public class CityActivity extends AppCompatActivity implements OnClickListener {
 
 
@@ -22,7 +23,7 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
 
     private View emptyView;
 
-    public static final String TAG = CityActivity.class.getSimpleName();
+    //public static final String TAG = CityActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
