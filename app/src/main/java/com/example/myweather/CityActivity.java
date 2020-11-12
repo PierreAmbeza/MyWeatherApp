@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import com.example.myweather.bo.City;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myweather.repository.CityRepository;
