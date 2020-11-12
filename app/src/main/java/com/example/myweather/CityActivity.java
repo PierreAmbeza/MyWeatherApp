@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import com.example.myweather.bo.City;
@@ -35,7 +34,7 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
 
         emptyView = findViewById(R.id.empty_view);
         findViewById(R.id.fab).setOnClickListener(this);
-        setup();
+        initList();
 
     }
 
@@ -46,11 +45,11 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
         //We init the list into the onResume method
         //so the list is updated each time the screen goes to foreground
         //initList();
-        setup();
+        initList();
     }
 
 
-    private void setup() {
+    private void initList() {
         final List<City> cities = CityRepository.getInstance(this).getCities();
         final CitiesAdapter citiesAdapter = new CitiesAdapter(cities);
         recyclerView.setAdapter(citiesAdapter);
