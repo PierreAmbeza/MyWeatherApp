@@ -22,7 +22,7 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
 
     private View emptyView;
 
-    //public static final String TAG = CityActivity.class.getSimpleName();
+    public static final String TAG = CityActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
