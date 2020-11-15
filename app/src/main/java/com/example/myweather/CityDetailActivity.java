@@ -3,7 +3,6 @@ package com.example.myweather;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +22,6 @@ import com.example.myweather.repository.CityRepository;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -34,8 +32,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
-import static okhttp3.logging.HttpLoggingInterceptor.Level.*;
-
 public class CityDetailActivity extends AppCompatActivity {
 
     private ImageView image;
@@ -43,9 +39,6 @@ public class CityDetailActivity extends AppCompatActivity {
     //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
-
-
-    private ImageView weather;
 
     private TextView city_name;
 
@@ -74,7 +67,7 @@ public class CityDetailActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         minutes = calendar.get(Calendar.MINUTE) + hour*60;
-        if(minutes - previous_time >= 3 || previous_time == 0) {
+        if(minutes - previous_time >= 60 || previous_time == 0) {
             weatherFromAPI(city_name);
         }
         else {
@@ -139,7 +132,7 @@ public class CityDetailActivity extends AppCompatActivity {
         final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor() ;
         httpLoggingInterceptor.setLevel(Level.BODY);
         city = checkCity(city);
-        final OkHttpClient okHttp = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();//.addInterceptor(new MyInterceptor()).build();
+        final OkHttpClient okHttp = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
         final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(MoshiConverterFactory.create())//.build();
                 .client(okHttp).build();
