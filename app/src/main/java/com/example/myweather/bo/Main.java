@@ -2,26 +2,67 @@ package com.example.myweather.bo;
 
 import com.squareup.moshi.Json;
 
-import java.io.Serializable;
-
-public class Main implements Serializable {
+public class Main {
 
     @Json(name = "temp")
-    public double temp;
-
+    private Double temp;
     @Json(name = "feels_like")
-    public double feels_like;
-
+    private Double feelsLike;
     @Json(name = "temp_min")
-    public double temp_min;
-
+    private Double tempMin;
     @Json(name = "temp_max")
-    public double temp_max;
-
-    @Json(name = "humidity")
-    public int humidity;
-
+    private Integer tempMax;
     @Json(name = "pressure")
-    public int pressure;
+    private Integer pressure;
+    @Json(name = "humidity")
+    private Integer humidity;
+
+    public Double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(Double temp) {
+        this.temp = temp;
+    }
+
+    public Double getFeelsLike() {
+        return feelsLike;
+    }
+
+    public void setFeelsLike(Double feelsLike) {
+        this.feelsLike = feelsLike;
+    }
+
+    public Double getTempMin() {
+        return tempMin;
+    }
+
+    public void setTempMin(Double tempMin) {
+        this.tempMin = tempMin;
+    }
+
+    public Integer getTempMax() {
+        return tempMax;
+    }
+
+    public void setTempMax(Integer tempMax) {
+        this.tempMax = tempMax;
+    }
+
+    public Integer getPressure() {
+        return pressure;
+    }
+
+    public void setPressure(Integer pressure) {
+        this.pressure = pressure;
+    }
+
+    public Integer getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(Integer humidity) {
+        this.humidity = humidity;
+    }
 
 }
