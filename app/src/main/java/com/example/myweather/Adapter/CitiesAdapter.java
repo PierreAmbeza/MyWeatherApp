@@ -17,6 +17,8 @@ import com.example.myweather.CityDetailActivity;
 
 import java.util.List;
 
+//Adapter for the recycler view
+
 public final class CitiesAdapter extends Adapter<CityViewHolder>{
 
 

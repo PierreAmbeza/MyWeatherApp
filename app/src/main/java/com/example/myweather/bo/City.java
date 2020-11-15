@@ -11,13 +11,16 @@ import androidx.room.PrimaryKey;
 import com.squareup.moshi.Json;
 
 import java.io.Serializable;
+//Base class
 
 @Entity
 final public class City implements Serializable {
 
+    //Add a unique key for each city added into the database
     @PrimaryKey(autoGenerate = true)
     public int id;
 
+    //Add the column with city name
     @ColumnInfo(name = "City")
     public final String city;
 
@@ -25,16 +28,4 @@ final public class City implements Serializable {
     public City(@NonNull String city){
         this.city = city;
     }
-
-
-
-    /*
-    public City(@NonNull String city){
-        this.city = city;
-        this.r_temp = null;
-        this.f_temp = null;
-        this.min_temp = min_temp;
-        this.max_temp = max_temp;
-        this.weather = weather;
-    }*/
 }

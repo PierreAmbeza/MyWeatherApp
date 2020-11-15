@@ -40,13 +40,13 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
         }
         else
         {
-            //cityFromAPI(city);
             saveCity(city);
             resetForm();
             //onBackPressed();
         }
     }
 
+    //Check if city to add is already in list or not
     private boolean checkList(String city){
         final List<City> cities = CityRepository.getInstance(this).getCities();
         for(City c:cities)
@@ -57,13 +57,18 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
         return true;
     }
 
+    //Save city in database
+
     private void saveCity(String city) {
         CityRepository.getInstance(this).addCity(new City(city));
     }
 
+    //Reset form after adding a city
     private void resetForm(){
         city_name.setText(null);
     }
+
+    //Check if entry is good (non null)
 
     private boolean checkFormEntry(String city)
     {

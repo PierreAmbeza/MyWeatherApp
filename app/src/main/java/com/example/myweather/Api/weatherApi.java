@@ -15,7 +15,8 @@ import retrofit2.http.Query;
 
 public interface weatherApi {
 
-    @GET("weather")
+    //Search the weather in addition with the base url
+    @GET("weather")//We add the wanted city, the units to have datas in °C and api_key to have datas
     Call<WResponse> getWeather(@Query("q") String city_name,
                                     @Query("units") String units,
                                     @Query("appid") String api_key);

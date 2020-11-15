@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.squareup.moshi.Json;
 
 import retrofit2.http.Field;
-
+//Class corresponding to the "main" field provide by the api, with all temperatures
 public class Main {
 
     @Json(name = "temp")

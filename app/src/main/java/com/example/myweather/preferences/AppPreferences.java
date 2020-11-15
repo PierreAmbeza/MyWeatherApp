@@ -20,6 +20,8 @@ public abstract class AppPreferences {
 
     private static final String WEATHER_PREFERENCES_KEY = "loginPreferencesKey";
 
+
+    //Save all datas for a specific city
     public static void saveCityWeather(@NonNull Context context, @NonNull WResponse data, String city, int time)
     {
         final SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -35,6 +37,7 @@ public abstract class AppPreferences {
         editor.apply();
     }
 
+    //Get all datas from a specific city
     @Nullable
     public static String getCityTemp(@NonNull Context context, String city)
     {
@@ -77,12 +80,14 @@ public abstract class AppPreferences {
         return defaultSharedPreferences.getInt(AppPreferences.WEATHER_PREFERENCES_KEY+city+"5", 0);
     }
 
+    //remove data for a specific city
+
     @Nullable
     public static void removeCity(@NonNull Context context, String city)
     {
         final SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final Editor editor = defaultSharedPreferences.edit();
-        for(int i = 0; i < 6; i++)
+        for(int i = 0; i < 6; i++)//Remove everything associated with the city
         {
             editor.remove(AppPreferences.WEATHER_PREFERENCES_KEY+city+Integer.toString(i));
         }

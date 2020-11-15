@@ -56,29 +56,14 @@ public class CityActivity extends AppCompatActivity implements OnClickListener {
         checkIsEmpty(citiesAdapter);
     }
 
-    /*
-    private void initList(){
-        //We retrieve the list of cities to display
-        final List<City> cities = CityRepository.getInstance(this).getCities();
-        final CitiesAdapter citiesAdapter = new CitiesAdapter(cities);
-        //We create the adapter and we attach it to the RecyclerView
-        if(cities.isEmpty())
-        {
-            setContentView(R.layout.activity_city_empty);
-            findViewById(R.id.fab).setOnClickListener(this);
-        }
-        if(citiesAdapter != null)
-        {
-            recyclerView.setAdapter(citiesAdapter);
-        }
-    }*/
-
+    //If we have an empty list then we display the umbrella
     private void checkIsEmpty(CitiesAdapter citiesAdapter)
     {
         emptyView.setVisibility(citiesAdapter == null || citiesAdapter.getItemCount() == 0? View.VISIBLE : View.GONE);
         recyclerView.setVisibility(citiesAdapter == null || citiesAdapter.getItemCount() == 0? View.GONE : View.VISIBLE);
     }
 
+    //Start add city activity
     @Override
     public void onClick(View v){
         final Intent intent = new Intent(this, AddCityActivity.class);

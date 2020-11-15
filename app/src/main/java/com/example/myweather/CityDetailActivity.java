@@ -34,9 +34,11 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class CityDetailActivity extends AppCompatActivity {
 
+
+    //We create the variables linked with the detail layout which will store the temp...
     private ImageView image;
 
-    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
+    final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
 
@@ -51,6 +53,7 @@ public class CityDetailActivity extends AppCompatActivity {
     private TextView min_temp;
 
     int minutes;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +64,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
     }
 
+    //Function to check if we have called the API in the last hour
     private void callApiOrNot(String city_name)
     {
         int previous_time = AppPreferences.getLastTime(this, city_name);
@@ -68,13 +72,14 @@ public class CityDetailActivity extends AppCompatActivity {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         minutes = calendar.get(Calendar.MINUTE) + hour*60;
         if(minutes - previous_time >= 60 || previous_time == 0) {
-            weatherFromAPI(city_name);
+            weatherFromAPI(city_name);//If we don't have called the API in the last our then we call it
         }
         else {
-            getCityWeather(city_name);
+            getCityWeather(city_name);//If we called the API in the last hour, then retrieve data from preferences
         }
     }
 
+    //Mathching view with corresponding variable
     private void initView(City city){
         image = findViewById(R.id.weather_image);
         city_name = findViewById(R.id.city);
@@ -86,6 +91,7 @@ public class CityDetailActivity extends AppCompatActivity {
         max_temp = findViewById(R.id.max);
     }
 
+    //add a menu to the activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //We add the "menu_order" to the current activity
@@ -93,6 +99,7 @@ public class CityDetailActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //Delete a city when the delete button is click and display an alert message to confirm
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -105,7 +112,7 @@ public class CityDetailActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
-                            CityRepository.getInstance(CityDetailActivity.this).deleteCity(city);
+                            CityRepository.getInstance(CityDetailActivity.this).deleteCity(city);//Delete city is "YES" button is clicked
                             AppPreferences.removeCity(CityDetailActivity.this, city.city);
                             finish();
                         }
@@ -113,13 +120,15 @@ public class CityDetailActivity extends AppCompatActivity {
             alertDialog.setNegativeButton("No",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                            dialog.dismiss();//Close dialog if "NO" button is clicked
                         }
                     });
             alertDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
+
+    //Check city to remove characters like "-" or spaces that have to be replaced by "+" to call the api
 
     private String checkCity(String city){
 
@@ -128,6 +137,7 @@ public class CityDetailActivity extends AppCompatActivity {
         return city;
     }
 
+    //Call the api
     private void weatherFromAPI(String city){
         final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor() ;
         httpLoggingInterceptor.setLevel(Level.BODY);
@@ -142,11 +152,11 @@ public class CityDetailActivity extends AppCompatActivity {
         {
             @Override
             public void onResponse(Call<WResponse> call, Response<WResponse> response) {
-                WResponse data = response.body();
+                WResponse data = response.body();//We get the data from the api
                 if(!(response.isSuccessful()))
                     Log.d(CityDetailActivity.class.getSimpleName(), String.valueOf(response.code()));
-                Main main = data.getMain();
-                List<Weather> w = data.getWeather();
+                Main main = data.getMain();//We match different data from api, here main (for temp...)
+                List<Weather> w = data.getWeather();//We match different data from api, here weather (for icon)
                 setData(main, w);
                 saveWeather(data);
                 Log.d(CityDetailActivity.class.getSimpleName(), "api called");
@@ -158,6 +168,7 @@ public class CityDetailActivity extends AppCompatActivity {
             } });
     }
 
+    //We set the data into the TextViews and the icon
     private void setData(Main main, List<Weather> w)
     {
         real_temp.setText(Double.toString(main.getTemp()) + "°C");
@@ -169,12 +180,12 @@ public class CityDetailActivity extends AppCompatActivity {
         image.setImageResource(imageResource);
     }
 
+    //We save the weather of appropriate city into the App preferences
     public void saveWeather(WResponse data){
-        Log.d(CityDetailActivity.class.getSimpleName(), Integer.toString(minutes));
         AppPreferences.saveCityWeather(this, data, city_name.getText().toString(), minutes);
-        Log.d(CityDetailActivity.class.getSimpleName(), AppPreferences.getCityTemp(this, city_name.getText().toString()));
     }
 
+    //We retrieve the weather from App preferences
     private void getCityWeather(String city)
     {
         real_temp.setText(AppPreferences.getCityTemp(this, city) + "°C");
