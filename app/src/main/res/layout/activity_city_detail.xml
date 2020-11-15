@@ -41,18 +41,17 @@
 
     <TextView
         android:id="@+id/temperature"
-        android:gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="30sp"
+        android:gravity="center"
         android:text="@string/real_temperature"
+        android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@id/feels"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/weather_image"
-        tools:text="@tools:sample/lorem"
-        />
+        tools:text="@tools:sample/lorem" />
 
     <TextView
         android:id="@+id/feels"
@@ -72,35 +71,49 @@
         android:id="@+id/minmax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="bottom"
-        tools:ignore="MissingConstraints"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/feels"
-        android:layout_marginTop="10dp"
 
-        >
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_baseline_arrow_downward_24"
+            android:layout_marginLeft="25dip"/>
 
         <TextView
             android:id="@+id/min"
-            android:gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginLeft="25dip"
             android:layout_marginRight="25dip"
-            tools:text="@tools:sample/lorem"
-            />
+            android:gravity="left"
+            android:textSize="15sp"
+            tools:text="@tools:sample/lorem" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dip"
+            app:srcCompat="@drawable/ic_baseline_arrow_upward_24" />
 
         <TextView
             android:id="@+id/max"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:layout_marginLeft="25dip"
+
             android:layout_marginRight="25dip"
+            android:textSize="15sp"
             tools:text="@tools:sample/lorem" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

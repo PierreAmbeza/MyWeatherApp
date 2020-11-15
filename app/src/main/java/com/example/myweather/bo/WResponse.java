@@ -1,8 +1,11 @@
 package com.example.myweather.bo;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.squareup.moshi.Json;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class WResponse implements Serializable {
 
@@ -10,8 +13,9 @@ public class WResponse implements Serializable {
     @Json(name = "main")
     private Main main;
 
+
     @Json(name = "weather")
-    public Weather weather;
+    public List<Weather> weather;
 
     public Main getMain() {
         return main;
@@ -21,7 +25,7 @@ public class WResponse implements Serializable {
         this.main = main;
     }
 
-    public Weather getWeather(){
-        return weather;
+    public List<Weather> getWeather(){
+        return this.weather;
     }
 }

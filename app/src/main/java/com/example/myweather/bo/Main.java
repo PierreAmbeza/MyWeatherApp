@@ -1,5 +1,7 @@
 package com.example.myweather.bo;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.squareup.moshi.Json;
 
 import retrofit2.http.Field;
@@ -13,11 +15,7 @@ public class Main {
     @Json(name = "temp_min")
     private Double tempMin;
     @Json(name = "temp_max")
-    private Integer tempMax;
-    @Json(name = "pressure")
-    private Integer pressure;
-    @Json(name = "humidity")
-    private Integer humidity;
+    private Double tempMax;
 
     public Double getTemp() {
         return temp;
@@ -43,28 +41,12 @@ public class Main {
         this.tempMin = tempMin;
     }
 
-    public Integer getTempMax() {
+    public Double getTempMax() {
         return tempMax;
     }
 
-    public void setTempMax(Integer tempMax) {
+    public void setTempMax(Double tempMax) {
         this.tempMax = tempMax;
-    }
-
-    public Integer getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(Integer pressure) {
-        this.pressure = pressure;
-    }
-
-    public Integer getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(Integer humidity) {
-        this.humidity = humidity;
     }
 
 }

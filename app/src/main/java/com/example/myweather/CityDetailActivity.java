@@ -16,44 +16,31 @@ import com.example.myweather.Api.weatherApi;
 import com.example.myweather.bo.City;
 import com.example.myweather.bo.Main;
 import com.example.myweather.bo.WResponse;
+import com.example.myweather.bo.Weather;
 import com.example.myweather.repository.CityRepository;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 import java.util.HashMap;
+import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
+import static okhttp3.logging.HttpLoggingInterceptor.Level.*;
+
 public class CityDetailActivity extends AppCompatActivity {
 
     private ImageView image;
 
-    final String api_key = "a24468e2938a78e4a1b58acd44317d4b";
+    final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
 
-    private static final HashMap<String, String> map = new HashMap<String, String>() {{
-        put("01d", "img_01d");
-        put("02d", "img_02d");
-        put("03d", "img_03d");
-        put("04d", "img_04d");
-        put("09d", "img_09d");
-        put("10d", "img_10d");
-        put("11d", "img_11d");
-        put("13d", "img_13d");
-        put("50d", "img50d");
-        put("01n", "img_01n");
-        put("02n", "img_02n");
-        put("03n", "img_03n");
-        put("04n", "img_04n");
-        put("09n", "img_09n");
-        put("10n", "img_10n");
-        put("11n", "img_11n");
-        put("13n", "img_13n");
-        put("50n", "img50n");
-    }};
 
     private ImageView weather;
 
@@ -73,14 +60,16 @@ public class CityDetailActivity extends AppCompatActivity {
 
         final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
         setContentView(R.layout.activity_city_detail);
-        int imageResource = getResources().getIdentifier("@drawable/img_10d", null, getPackageName());
+
         image = findViewById(R.id.weather_image);
-        image.setImageResource(imageResource);
         city_name = findViewById(R.id.city);
         city_name.setText(city.city);
         getSupportActionBar().setTitle(city.city);
-        cityFromAPI(city.city);
+        weatherFromAPI(city.city);
         real_temp = findViewById(R.id.temperature);
+        feel_temp = findViewById(R.id.feels);
+        min_temp = findViewById(R.id.min);
+        max_temp = findViewById(R.id.max);
 
     }
 
@@ -118,25 +107,46 @@ public class CityDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void cityFromAPI(String city){
-        final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/").addConverterFactory(MoshiConverterFactory. create()) .build() ;
+    private String checkCity(String city){
+        city = city.replaceAll("[^a-zA-Z0-9\\s]", "+");
+        Log.d(CityDetailActivity.class.getSimpleName(), city);
+        return city;
+    }
+
+    private void weatherFromAPI(String city){
+        final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor() ;
+        httpLoggingInterceptor.setLevel(Level.BODY);
+        city = checkCity(city);
+        final OkHttpClient okHttp = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();//.addInterceptor(new MyInterceptor()).build();
+        final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
+                .addConverterFactory(MoshiConverterFactory.create())//.build();
+                .client(okHttp).build();
         weatherApi service = retrofit.create(weatherApi.class);
-        Call<WResponse> call = service.getWeather(city, api_key);
+        Call<WResponse> call = service.getWeather(city.trim(), "metric", api_key);
         call.enqueue(new Callback<WResponse>()
         {
             @Override
             public void onResponse(Call<WResponse> call, Response<WResponse> response) {
-                Log.d(CityDetailActivity.class.getSimpleName(), "reponse");
-                WResponse WResponse = response.body();
-                Main main = WResponse.getMain();
-                Log.d(AddCityActivity.class.getSimpleName(), "test:"+ Double.toString(main.getTemp()));
-                real_temp.setText(Double.toString(main.getTemp()));
+                WResponse data = response.body();
+                if(!(response.isSuccessful()))
+                    Log.d(CityDetailActivity.class.getSimpleName(), String.valueOf(response.code()));
+                Main main = data.getMain();
+                List<Weather> w = data.getWeather();
+                Log.d(AddCityActivity.class.getSimpleName(), "test:"+ w.get(0).getIcon());
+                real_temp.setText(Double.toString(main.getTemp()) + "°C");
+                feel_temp.setText("feels like " + Double.toString(main.getFeelsLike()) + "°C");
+                min_temp.setText("Min " +Double.toString(main.getTempMin()) + "°C");
+                max_temp.setText("Max " + Double.toString(main.getTempMax()) +"°C");
+                int imageResource = getResources()
+                        .getIdentifier("@drawable/img_" + w.get(0).getIcon(), null, getPackageName());
+                image.setImageResource(imageResource);
+
+
 
             }
             @Override
             public void onFailure(Call<WResponse> call, Throwable t) {
-                Log.d(CityDetailActivity.class.getSimpleName(), "failure");
-                //Toast.makeText(this, "Cannot add city", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
             } });
     }
 }

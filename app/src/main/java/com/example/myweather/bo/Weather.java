@@ -5,5 +5,9 @@ import com.squareup.moshi.Json;
 public class Weather {
 
     @Json(name = "icon")
-    public String icon;
+    private String icon;
+
+    public String getIcon(){
+        return this.icon;
+    }
 }
