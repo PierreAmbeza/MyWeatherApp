@@ -18,7 +18,6 @@ final public class City implements Serializable {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @Json(name = "City")
     @ColumnInfo(name = "City")
     public final String city;
     /*
@@ -40,6 +39,9 @@ final public class City implements Serializable {
     public City(@NonNull String city){
         this.city = city;
     }
+
+
+
     /*
     public City(@NonNull String city){
         this.city = city;
