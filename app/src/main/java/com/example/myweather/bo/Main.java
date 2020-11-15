@@ -2,6 +2,8 @@ package com.example.myweather.bo;
 
 import com.squareup.moshi.Json;
 
+import retrofit2.http.Field;
+
 public class Main {
 
     @Json(name = "temp")

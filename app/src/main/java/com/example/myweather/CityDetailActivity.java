@@ -2,7 +2,6 @@ package com.example.myweather;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myweather.Api.weatherApi;
 import com.example.myweather.bo.City;
 import com.example.myweather.bo.Main;
-import com.example.myweather.bo.apiManager;
+import com.example.myweather.bo.WResponse;
 import com.example.myweather.repository.CityRepository;
 
 import java.util.HashMap;
@@ -121,28 +120,24 @@ public class CityDetailActivity extends AppCompatActivity {
 
     private void cityFromAPI(String city){
         final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/").addConverterFactory(MoshiConverterFactory. create()) .build() ;
-        final weatherApi service = retrofit.create(weatherApi. class);
-        final Call<apiManager> call = service.getCity(city, "metric", api_key);
-        Log.d(CityDetailActivity.class.getSimpleName(), "test"+ service.getCity(city, "metric", api_key));
-        call.enqueue(new Callback<apiManager>()
+        weatherApi service = retrofit.create(weatherApi.class);
+        Call<WResponse> call = service.getWeather(city, api_key);
+        call.enqueue(new Callback<WResponse>()
         {
             @Override
-            public void onResponse(Call<apiManager> call, Response<apiManager> response) {
+            public void onResponse(Call<WResponse> call, Response<WResponse> response) {
                 Log.d(CityDetailActivity.class.getSimpleName(), "reponse");
-                apiManager apiManager = response.body();
-                Main main = apiManager.getMain();
-                Log.d(AddCityActivity.class.getSimpleName(), "test:"+ Double.toString(main.temp));
-                real_temp.setText(Double.toString(main.temp));
-
+                WResponse WResponse = response.body();
+                Main main = WResponse.getMain();
+                Log.d(AddCityActivity.class.getSimpleName(), "test:"+ Double.toString(main.getTemp()));
+                real_temp.setText(Double.toString(main.getTemp()));
 
             }
             @Override
-            public void onFailure(Call<apiManager> call, Throwable t) {
+            public void onFailure(Call<WResponse> call, Throwable t) {
                 Log.d(CityDetailActivity.class.getSimpleName(), "failure");
                 //Toast.makeText(this, "Cannot add city", Toast.LENGTH_SHORT).show();
             } });
-
-
     }
 }
 

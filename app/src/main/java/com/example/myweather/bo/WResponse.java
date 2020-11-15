@@ -4,7 +4,7 @@ import com.squareup.moshi.Json;
 
 import java.io.Serializable;
 
-public class apiManager implements Serializable {
+public class WResponse implements Serializable {
 
 
     @Json(name = "main")
