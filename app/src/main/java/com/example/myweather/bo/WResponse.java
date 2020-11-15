@@ -13,7 +13,6 @@ public class WResponse implements Serializable {
     @Json(name = "main")
     private Main main;
 
-
     @Json(name = "weather")
     public List<Weather> weather;
 

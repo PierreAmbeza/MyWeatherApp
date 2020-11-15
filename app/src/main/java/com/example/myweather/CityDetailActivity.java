@@ -37,7 +37,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
     private ImageView image;
 
-    final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
+    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
 
@@ -108,8 +108,9 @@ public class CityDetailActivity extends AppCompatActivity {
     }
 
     private String checkCity(String city){
+
+        city = city.replaceAll("-", " ");
         city = city.replaceAll("[^a-zA-Z0-9\\s]", "+");
-        Log.d(CityDetailActivity.class.getSimpleName(), city);
         return city;
     }
 
@@ -117,12 +118,13 @@ public class CityDetailActivity extends AppCompatActivity {
         final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor() ;
         httpLoggingInterceptor.setLevel(Level.BODY);
         city = checkCity(city);
+        Log.d(CityDetailActivity.class.getSimpleName(), city);
         final OkHttpClient okHttp = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();//.addInterceptor(new MyInterceptor()).build();
         final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(MoshiConverterFactory.create())//.build();
                 .client(okHttp).build();
         weatherApi service = retrofit.create(weatherApi.class);
-        Call<WResponse> call = service.getWeather(city.trim(), "metric", api_key);
+        Call<WResponse> call = service.getWeather(city, "metric", api_key);
         call.enqueue(new Callback<WResponse>()
         {
             @Override
@@ -140,8 +142,6 @@ public class CityDetailActivity extends AppCompatActivity {
                 int imageResource = getResources()
                         .getIdentifier("@drawable/img_" + w.get(0).getIcon(), null, getPackageName());
                 image.setImageResource(imageResource);
-
-
 
             }
             @Override
