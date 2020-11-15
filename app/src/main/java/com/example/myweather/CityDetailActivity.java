@@ -37,7 +37,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
     private ImageView image;
 
-    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
+    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";;
 
     public static final String CITY_EXTRA = "cityExtra";
 
