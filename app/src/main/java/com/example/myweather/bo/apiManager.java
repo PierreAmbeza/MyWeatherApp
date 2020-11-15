@@ -2,7 +2,11 @@ package com.example.myweather.bo;
 
 import com.squareup.moshi.Json;
 
-public class apiManager {
+import java.io.Serializable;
+
+public class apiManager implements Serializable {
+
+
     @Json(name = "main")
     public Main main;
 

@@ -4,7 +4,7 @@
     <string name="save">Save</string>
     <string name="value" />
     <string name="weather" />
-    <string name="real_temperature" />
+    <string name="real_temperature"></string>>
     <string name="feeling_temperature" />
     <string name="min_temperature" />
     <string name="max_temperature" />

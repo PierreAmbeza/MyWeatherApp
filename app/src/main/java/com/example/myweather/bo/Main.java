@@ -18,4 +18,10 @@ public class Main implements Serializable {
     @Json(name = "temp_max")
     public double temp_max;
 
+    @Json(name = "humidity")
+    public int humidity;
+
+    @Json(name = "pressure")
+    public int pressure;
+
 }
