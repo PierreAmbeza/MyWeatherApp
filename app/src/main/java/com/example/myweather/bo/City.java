@@ -20,21 +20,7 @@ final public class City implements Serializable {
 
     @ColumnInfo(name = "City")
     public final String city;
-    /*
-    @ColumnInfo(name = "Real Temp")
-    public final float r_temp;
 
-    @ColumnInfo(name = "Feel Temp")
-    public final float f_temp;
-
-    @ColumnInfo(name = "Min temp")
-    public final float min_temp;
-
-    @ColumnInfo(name = "Max temp")
-    public final float max_temp;
-
-    @ColumnInfo(name = "Weather")
-    public final String weather;*/
 
     public City(@NonNull String city){
         this.city = city;

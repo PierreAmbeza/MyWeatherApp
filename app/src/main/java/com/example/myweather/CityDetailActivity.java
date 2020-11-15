@@ -3,6 +3,7 @@ package com.example.myweather;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,9 +18,11 @@ import com.example.myweather.bo.City;
 import com.example.myweather.bo.Main;
 import com.example.myweather.bo.WResponse;
 import com.example.myweather.bo.Weather;
+import com.example.myweather.preferences.AppPreferences;
 import com.example.myweather.repository.CityRepository;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class CityDetailActivity extends AppCompatActivity {
 
     private ImageView image;
 
-    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";;
+    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
 
@@ -54,23 +57,40 @@ public class CityDetailActivity extends AppCompatActivity {
 
     private TextView min_temp;
 
+    int minutes;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
         setContentView(R.layout.activity_city_detail);
+        initView(city);
+        callApiOrNot(city.city);
 
+    }
+
+    private void callApiOrNot(String city_name)
+    {
+        int previous_time = AppPreferences.getLastTime(this, city_name);
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minutes = calendar.get(Calendar.MINUTE) + hour*60;
+        if(minutes - previous_time >= 3 || previous_time == 0) {
+            weatherFromAPI(city_name);
+        }
+        else {
+            getCityWeather(city_name);
+        }
+    }
+
+    private void initView(City city){
         image = findViewById(R.id.weather_image);
         city_name = findViewById(R.id.city);
         city_name.setText(city.city);
         getSupportActionBar().setTitle(city.city);
-        weatherFromAPI(city.city);
         real_temp = findViewById(R.id.temperature);
         feel_temp = findViewById(R.id.feels);
         min_temp = findViewById(R.id.min);
         max_temp = findViewById(R.id.max);
-
     }
 
     @Override
@@ -93,6 +113,7 @@ public class CityDetailActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             final City city = (City) getIntent().getSerializableExtra(CityDetailActivity.CITY_EXTRA);
                             CityRepository.getInstance(CityDetailActivity.this).deleteCity(city);
+                            AppPreferences.removeCity(CityDetailActivity.this, city.city);
                             finish();
                         }
                     });
@@ -118,7 +139,6 @@ public class CityDetailActivity extends AppCompatActivity {
         final HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor() ;
         httpLoggingInterceptor.setLevel(Level.BODY);
         city = checkCity(city);
-        Log.d(CityDetailActivity.class.getSimpleName(), city);
         final OkHttpClient okHttp = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();//.addInterceptor(new MyInterceptor()).build();
         final Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(MoshiConverterFactory.create())//.build();
@@ -134,14 +154,9 @@ public class CityDetailActivity extends AppCompatActivity {
                     Log.d(CityDetailActivity.class.getSimpleName(), String.valueOf(response.code()));
                 Main main = data.getMain();
                 List<Weather> w = data.getWeather();
-                Log.d(AddCityActivity.class.getSimpleName(), "test:"+ w.get(0).getIcon());
-                real_temp.setText(Double.toString(main.getTemp()) + "°C");
-                feel_temp.setText("feels like " + Double.toString(main.getFeelsLike()) + "°C");
-                min_temp.setText("Min " +Double.toString(main.getTempMin()) + "°C");
-                max_temp.setText("Max " + Double.toString(main.getTempMax()) +"°C");
-                int imageResource = getResources()
-                        .getIdentifier("@drawable/img_" + w.get(0).getIcon(), null, getPackageName());
-                image.setImageResource(imageResource);
+                setData(main, w);
+                saveWeather(data);
+                Log.d(CityDetailActivity.class.getSimpleName(), "api called");
 
             }
             @Override
@@ -149,6 +164,35 @@ public class CityDetailActivity extends AppCompatActivity {
                 t.printStackTrace();
             } });
     }
+
+    private void setData(Main main, List<Weather> w)
+    {
+        real_temp.setText(Double.toString(main.getTemp()) + "°C");
+        feel_temp.setText("feels like " + Double.toString(main.getFeelsLike()) + "°C");
+        min_temp.setText("Min " + Double.toString(main.getTempMin()) + "°C");
+        max_temp.setText("Max " + Double.toString(main.getTempMax()) +"°C");
+        int imageResource = getResources()
+                .getIdentifier("@drawable/img_" + w.get(0).getIcon(), null, getPackageName());
+        image.setImageResource(imageResource);
+    }
+
+    public void saveWeather(WResponse data){
+        Log.d(CityDetailActivity.class.getSimpleName(), Integer.toString(minutes));
+        AppPreferences.saveCityWeather(this, data, city_name.getText().toString(), minutes);
+        Log.d(CityDetailActivity.class.getSimpleName(), AppPreferences.getCityTemp(this, city_name.getText().toString()));
+    }
+
+    private void getCityWeather(String city)
+    {
+        real_temp.setText(AppPreferences.getCityTemp(this, city) + "°C");
+        feel_temp.setText(AppPreferences.getCityFT(this, city) + "°C");
+        min_temp.setText(AppPreferences.getCityMinTemp(this, city) + "°C");
+        max_temp.setText(AppPreferences.getCityMaxTemp(this, city) +"°C");
+        int imageResource = getResources()
+                .getIdentifier("@drawable/img_" + AppPreferences.getCityIcon(this, city), null, getPackageName());
+        image.setImageResource(imageResource);
+    }
+
 }
 
 

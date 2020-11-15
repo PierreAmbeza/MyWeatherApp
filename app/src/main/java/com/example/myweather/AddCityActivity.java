@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.myweather.bo.City;
 import com.example.myweather.repository.CityRepository;
 
+import java.util.List;
+
 public class AddCityActivity extends AppCompatActivity implements OnClickListener {
 
     private EditText city_name;
@@ -30,7 +32,7 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
     public void onClick(View v)
     {
         final String city = city_name.getEditableText().toString();
-        final boolean canAddCity = checkFormEntry(city);
+        final boolean canAddCity = checkFormEntry(city) && checkList(city);
 
         if(canAddCity)
         {
@@ -45,7 +47,19 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void saveCity(String city) { CityRepository.getInstance(this).addCity(new City(city)); }
+    private boolean checkList(String city){
+        final List<City> cities = CityRepository.getInstance(this).getCities();
+        for(City c:cities)
+        {
+            if(c.city == city)
+                return false;
+        }
+        return true;
+    }
+
+    private void saveCity(String city) {
+        CityRepository.getInstance(this).addCity(new City(city));
+    }
 
     private void resetForm(){
         city_name.setText(null);

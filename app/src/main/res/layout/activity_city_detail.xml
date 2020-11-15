@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="50sp"
+        android:textSize="40sp"
         android:text="@string/city"
         app:layout_constraintBottom_toTopOf="@id/weather_image"
         app:layout_constraintEnd_toEndOf="parent"
