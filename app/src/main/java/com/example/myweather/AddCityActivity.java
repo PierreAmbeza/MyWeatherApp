@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -33,8 +34,9 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
     {
         final String city = city_name.getEditableText().toString();
         final boolean canAddCity = checkFormEntry(city) && checkList(city);
-
-        if(canAddCity)
+        Log.d(AddCityActivity.class.getSimpleName(), Boolean.toString(checkFormEntry(city)));
+        Log.d(AddCityActivity.class.getSimpleName(), Boolean.toString(checkList(city)));
+        if(!canAddCity)
         {
             Toast.makeText(this, "Cannot add city", Toast.LENGTH_SHORT).show();
         }
@@ -49,9 +51,11 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
     //Check if city to add is already in list or not
     private boolean checkList(String city){
         final List<City> cities = CityRepository.getInstance(this).getCities();
+        Log.d(AddCityActivity.class.getSimpleName(), "to add: " + city);
         for(City c:cities)
         {
-            if(c.city == city)
+            Log.d(AddCityActivity.class.getSimpleName(), "Already in list:" + city);
+            if(c.city.equalsIgnoreCase(city))
                 return false;
         }
         return true;
@@ -72,6 +76,6 @@ public class AddCityActivity extends AppCompatActivity implements OnClickListene
 
     private boolean checkFormEntry(String city)
     {
-        return TextUtils.isEmpty(city);
+        return !TextUtils.isEmpty(city);
     }
 }
