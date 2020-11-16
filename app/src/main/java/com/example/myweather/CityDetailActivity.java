@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,7 @@ public class CityDetailActivity extends AppCompatActivity {
     //We create the variables linked with the detail layout which will store the temp...
     private ImageView image;
 
-    final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
+    //final String api_key = "64808b9fc49499f3bff52b4eac1b7e8f";
 
     public static final String CITY_EXTRA = "cityExtra";
 
@@ -71,6 +72,8 @@ public class CityDetailActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         minutes = calendar.get(Calendar.MINUTE) + hour*60;
+        if(minutes < previous_time)
+            minutes = minutes + 1440; //Manage possible problems on day changing
         if(minutes - previous_time >= 60 || previous_time == 0) {
             weatherFromAPI(city_name);//If we don't have called the API in the last our then we call it
         }
@@ -79,7 +82,7 @@ public class CityDetailActivity extends AppCompatActivity {
         }
     }
 
-    //Mathching view with corresponding variable
+    //Matching view with corresponding variable
     private void initView(City city){
         image = findViewById(R.id.weather_image);
         city_name = findViewById(R.id.city);
